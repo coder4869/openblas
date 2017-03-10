@@ -19,8 +19,18 @@ Compile For Andorid(mac):
 	make TARGET=ARMV7 HOSTCC=gcc CC=arm-linux-androideabi-gcc NOFORTRAN=1
 Note:
  if errors occured like "fatal error: stdio.h: No such file or directory", use following cmd:
-    override CFLAGS += -I$SYSROOT/usr/include -I.
+    make TARGET=ARMV7 HOSTCC=gcc CC=arm-linux-androideabi-gcc NOFORTRAN=1 CFLAGS+=-I$SYSROOT/usr/include -I.
+5.compile finish and the following will appear:
 
+    OpenBLAS build complete. (BLAS CBLAS)
 
+    OS               ... Android             
+    Architecture     ... arm               
+    BINARY           ... 32bit                 
+    C compiler       ... GCC  (command line : arm-linux-androideabi-gcc)
+-n   Library Name     ... libopenblas_armv7p-r0.2.19.a
+(Multi threaded; Max num-threads is 4)
 
+To install the library, you can run "make PREFIX=/path/to/your/installation install".
+    
 ```
