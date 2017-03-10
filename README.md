@@ -7,7 +7,7 @@ Compile For Andorid(mac):
 1.Prepare:
 	Android SDK and NDK:
 	studio and sdk tools : https://developer.android.google.cn/studio/index.html
-        ndk : https://developer.android.google.cn/ndk/downloads/index.html
+    ndk : https://developer.android.google.cn/ndk/downloads/index.html
 	openblas src : https://sourceforge.net/projects/openblas/files/ 
 2.Build Android Dev Environment
 3.Config Path:
