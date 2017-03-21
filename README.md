@@ -15,11 +15,14 @@ Compile For Andorid(mac):
 	export PATH=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin:$PATH
 	export SYSROOT=$NDK/platforms/android-19/arch-arm
 	export CC="$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linnux-androideabi-gcc --sysroot=$SYSROOT"
-4.Run cmd in dir of openblas src
+4.Run cmd in dir of openblas src(for ARMV7)
 	make TARGET=ARMV7 HOSTCC=gcc CC=arm-linux-androideabi-gcc NOFORTRAN=1
 Note:
  if errors occured like "fatal error: stdio.h: No such file or directory", use following cmd:
     make TARGET=ARMV7 HOSTCC=gcc CC=arm-linux-androideabi-gcc NOFORTRAN=1 CFLAGS+=-I$SYSROOT/usr/include -I.
+FOR ARMV8:
+    make TARGET=ARMV8 BINARY=64 HOSTCC=gcc CC=aarch64-linux-android-gcc NOFORTRAN=1 CFLAGS+=-I$SYSROOT/usr/include -I.
+
 5.compile finish and the following will appear:
 
     OpenBLAS build complete. (BLAS CBLAS)
