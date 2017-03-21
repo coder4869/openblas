@@ -1,0 +1,53 @@
+Error 1: uses VFP register arguments, output does not.
+```
+Detail:
+  /xxx/bin/../lib/gcc/arm-linux-androideabi/4.9/../../../../arm-linux-androideabi/bin/ld: 
+  error: /opt/arm-tools/lib/libopenblas.a(dgemm_beta.o) uses VFP register arguments, output does not
+  ...
+Reason:
+  Android no longer supports "-mfloat-abi=hard".
+Solution for CORTEXA9/CORTEXA15/ARMV7: 
+  [1].Open file "Makefile.arm" and replace "-mfloat-abi=hard" by "-mfloat-abi=softfp" for Android section. For Example:
+  BEFORE REPLACE: 
+    ifeq ($(CORE), $(filter $(CORE),CORTEXA9 CORTEXA15))
+    ifeq ($(OSNAME), Android)
+    CCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=hard -march=armv7-a
+    FCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=hard -march=armv7-a
+    else
+    CCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard -march=armv7-a
+    FCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard -march=armv7-a
+    endif
+    endif
+   
+    ifeq ($(CORE), ARMV7)
+    ifeq ($(OSNAME), Android)
+    CCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=hard -march=armv7-a -Wl,--no-warn-mismatch
+    FCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=hard -march=armv7-a -Wl,--no-warn-mismatch
+    else
+    CCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard -march=armv7-a
+    FCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard -march=armv7-a
+    endif
+    endif
+  AFTER REPLACE:
+    ifeq ($(CORE), $(filter $(CORE),CORTEXA9 CORTEXA15))
+    ifeq ($(OSNAME), Android)
+    CCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=softfp -march=armv7-a
+    FCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=softfp -march=armv7-a
+    else
+    CCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard -march=armv7-a
+    FCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard -march=armv7-a
+    endif
+    endif
+   
+    ifeq ($(CORE), ARMV7)
+    ifeq ($(OSNAME), Android)
+    CCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=softfp -march=armv7-a -Wl,--no-warn-mismatch
+    FCOMMON_OPT += -marm -mfpu=neon  -mfloat-abi=softfp -march=armv7-a -Wl,--no-warn-mismatch
+    else
+    CCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard -march=armv7-a
+    FCOMMON_OPT += -marm -mfpu=vfpv3  -mfloat-abi=hard -march=armv7-a
+    endif
+    endif
+  [2]Re-compile the c/cpp code to library
+Note: config for ARMV6/ARMV5 also in file "Makefile.arm", config for "ARMV8-64" in file "Makefile.arm64".
+```
